@@ -7,11 +7,11 @@
         [clojure.contrib.def          :only (defvar- defmacro-)])
   (:load "default_util"))
 
-(defvar- static-contents
-  (let [root "/Users/mmcgrana/Desktop/git/clj-doc/src/clj_doc/generator/default-assets"]
+(defn- static-contents
+  [root]
     (map (fn [path] [path (slurp (file-join root path))])
          `("javascripts/default.js" "javascripts/jquery-1.2.6.js"
-           "stylesheets/reset-min.css" "stylesheets/default.css"))))
+           "stylesheets/reset-min.css" "stylesheets/default.css")))
 
 (defvar- subdirs '("javascripts" "stylesheets" "vars" "namespaces"))
 
@@ -126,7 +126,7 @@
                        (h source))]]))
       (license-notice)]))
 
-(defn generate [ns-syms var-tuples options]
+(defn generate [ns-syms var-tuples static-contents-dir options]
   "Generate the HTML documation. Returns a 2-tuple, the first containing
   relative paths of directories to ensure exists, the second of (relative path,
   contents pairs) representing to files to write at specified locations."
@@ -140,4 +140,4 @@
                  [(var-path ns-sym var-sym) (var-template tuple)])
                sorted-var-tuples)]
     [subdirs
-     `(~index-contents ~@static-contents ~@var-contents)]))
+     `(~index-contents ~@(static-contents static-contents-dir) ~@var-contents)]))

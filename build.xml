@@ -1,0 +1,32 @@
+<project name="clj-doc" default="build_doc" basedir=".">
+  
+  <property name="clojure_home" location=".."/>
+  <property name="clojure_jar" location="${clojure_home}/clojure/clojure.jar"/>
+  <property name="clojure_contrib_jar" location="${clojure_home}/clojure-contrib/clojure-contrib.jar"/>
+  <property name="clj_html" location="../clj-html/src"/>
+  <property name="clj_html_helpers" location="../clj-html-helpers/src"/>
+  <property name="clj_doc" location="src"/>
+  
+  <property name="clojure_src" location="${clojure_home}/clojure/src/clj"/>
+  <property name="clojure_contrib_src" location="${clojure_home}/clojure-contrib/src"/>
+  <property name="doc_dest" location="../clojure-documentation"/>
+  <property name="static_contents_dir" location="src/clj_doc/generator/default-assets"/>
+  
+  <target name="build_doc" 
+          description="Build documentation for Clojure and Clojure-contrib">
+    <java classname="clojure.main">
+      <classpath>
+        <path location="${clojure_jar}"/>
+        <path location="${clojure_contrib_jar}"/>
+        <path location="${clj_html}"/>
+        <path location="${clj_html_helpers}"/>
+        <path location="${clj_doc}"/>
+      </classpath>
+      <arg value="bin/gen.clj"/>
+      <arg value="${clojure_src}"/>
+      <arg value="${clojure_contrib_src}"/>
+      <arg value="${doc_dest}"/>
+      <arg value="${static_contents_dir}"/>
+    </java>
+  </target>
+</project>
